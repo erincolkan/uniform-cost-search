@@ -23,7 +23,7 @@ class CityNotFoundError(Exception):
 #Each city in our graph is represented as a Node.
 class Node:
     def __init__(self, name):
-        self.name = name.title()
+        self.name = name
         self.neighbors = {}
 
 
@@ -38,8 +38,8 @@ def build_graph(path, printMap):
         #Extract all the cities and put them into the dictionary named "cities".
         for line in reader:
             #Assign each line to a variable for better readability.
-            city1 = line[0].title()
-            city2 = line[1].title()
+            city1 = line[0].lower()
+            city2 = line[1].lower()
             weight = line[2]
 
             #Add cities to the dictionary if they don't already exist
@@ -108,16 +108,16 @@ if __name__ == "__main__":
     #Test cities.
     while True:
         try:
-            print("Please write exit to terminate the program.") 
-            departure = input("Please enter the city of departure:").strip().replace(" ", "").title()
+            print("Please write exit to terminate the program.\n") 
+            departure = input("Please enter the city of departure:").strip().replace(" ", "").lower()
             
-            if departure == 'Exit':
+            if departure == 'exit':
                 print("Bye!")
                 break
             
-            arrival = input("Please enter the city of arrival:").strip().replace(" ", "").title()
+            arrival = input("Please enter the city of arrival:").strip().replace(" ", "").lower()
 
-            if arrival == 'Exit':
+            if arrival == 'exit':
                 print("Bye!")
                 break
 
