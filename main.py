@@ -2,9 +2,10 @@
 import csv
 from queue import PriorityQueue
 from io import open
+import os
 
 #file path.
-FILE_PATH = "./data/cities.csv"
+FILE_PATH = os.getcwd() + "/data/cities.csv"
 
 #store the cities and their neighboring cities in a dictionary.
 cities = {}
@@ -17,12 +18,12 @@ def PrintCities(cities):
 #This exception is thrown when a desired city is not found in the dictionary.
 class CityNotFoundError(Exception):
     def __init__(self, city):
-        print("%s does not exist" % city)
+        pass
 
 #Each city in our graph is represented as a Node.
 class Node:
     def __init__(self, name):
-        self.name = name
+        self.name = name.title()
         self.neighbors = {}
 
 
@@ -37,8 +38,8 @@ def build_graph(path, printMap):
         #Extract all the cities and put them into the dictionary named "cities".
         for line in reader:
             #Assign each line to a variable for better readability.
-            city1 = line[0]
-            city2 = line[1]
+            city1 = line[0].title()
+            city2 = line[1].title()
             weight = line[2]
 
             #Add cities to the dictionary if they don't already exist
@@ -101,12 +102,26 @@ def uniform_cost_search(graph, start, end):
 
 # Implement main to call functions with appropriate try-except blocks
 if __name__ == "__main__":
-    #Read the file and initialize the graph.
-    build_graph(FILE_PATH, False)
+    #Read the file and initialize the graph, later print it.
+    build_graph(FILE_PATH, True)
 
-    #Test the UCS algorithm by given cities in the homework definition.
-    uniform_cost_search(cities, "İstanbul", "Kayseri")
-    uniform_cost_search(cities, "Trabzon", "İzmir")
-    uniform_cost_search(cities, "Çanakkale", "Konya")
-    uniform_cost_search(cities, "Balıkesir", "Adana")
-    uniform_cost_search(cities, "İstanbul", "Paris")
+    #Test cities.
+    while True:
+        try:
+            print("Please write exit to terminate the program.") 
+            departure = input("Please enter the city of departure:").strip().replace(" ", "").title()
+            
+            if departure == 'Exit':
+                print("Bye!")
+                break
+            
+            arrival = input("Please enter the city of arrival:").strip().replace(" ", "").title()
+
+            if arrival == 'Exit':
+                print("Bye!")
+                break
+
+            uniform_cost_search(cities, departure, arrival)
+      
+        except CityNotFoundError as cne:
+            print("City named", cne.args[0], "couldn't be found.")
